@@ -1,0 +1,439 @@
+[
+    {
+        "id": "8e611630.03d7b8",
+        "type": "tab",
+        "label": "Workshop 1 - Watson Assistant",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "a9cb9546.cc5218",
+        "type": "watson-conversation-v1-workspace-manager",
+        "z": "8e611630.03d7b8",
+        "name": "List Intents",
+        "cwm-custom-mode": "listIntents",
+        "cwm-workspace-id": "",
+        "cwm-intent": "{{params.intent}}",
+        "cwm-example": "{{params.example}}",
+        "cwm-entity": "",
+        "cwm-entity-value": "",
+        "cwm-dialog-node": "",
+        "cwm-export-content": false,
+        "cwm-default-endpoint": true,
+        "cwm-service-endpoint": "https://gateway.watsonplatform.net/assistant/api",
+        "x": 657.4999389648438,
+        "y": 236,
+        "wires": [
+            [
+                "d95c9af6.24e418"
+            ]
+        ]
+    },
+    {
+        "id": "d95c9af6.24e418",
+        "type": "ui_template",
+        "z": "8e611630.03d7b8",
+        "group": "6202985a.636498",
+        "name": "",
+        "order": 1,
+        "width": "6",
+        "height": "10",
+        "format": "<script type=\"text/javascript\" charset=\"utf-8\">\n    this.scope.action = function() {\n        var intent;\n        var example;\n        \n        var intent_input = document.getElementsByClassName(\"radio\");\n        for (var i = 0; i < intent_input.length; i++) {\n            if (intent_input[i].getAttribute(\"aria-checked\") === \"true\") {\n                intent = intent_input[i].getAttribute(\"value\");\n            }\n        }\n        \n        example = document.getElementById(\"example\")\n        \n        return {\n            intent: intent,\n            example: example.value\n        }\n    }\n</script>\n\n<md-radio-group>\n    <div ng-repeat=\"intent in msg.intents\">\n        <md-radio-button class=\"radio\" value=\"{{ intent.intent }}\">{{ intent.intent }}</md-radio-button>\n    </div>\n</md-radio-group>\n\n<md-input-container>\n    <label>Example</label>\n    <input id=\"example\" type=\"text\">\n</md-input-container>\n\n<md-button ng-click=\"send({payload:action()})\">Send</md-button>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "templateScope": "local",
+        "x": 845.4999389648438,
+        "y": 236.66668701171875,
+        "wires": [
+            [
+                "fb6693f1.788b5"
+            ]
+        ]
+    },
+    {
+        "id": "448ee3df.a856fc",
+        "type": "watson-conversation-v1-workspace-manager",
+        "z": "8e611630.03d7b8",
+        "name": "Create Example",
+        "cwm-custom-mode": "createExample",
+        "cwm-workspace-id": "",
+        "cwm-intent": "{{params.intent}}",
+        "cwm-example": "{{params.example}}",
+        "cwm-entity": "",
+        "cwm-entity-value": "",
+        "cwm-dialog-node": "",
+        "cwm-export-content": false,
+        "cwm-default-endpoint": true,
+        "cwm-service-endpoint": "https://gateway.watsonplatform.net/assistant/api",
+        "x": 504.66668701171875,
+        "y": 42,
+        "wires": [
+            [
+                "bb324a5c.b9ea58"
+            ]
+        ]
+    },
+    {
+        "id": "d881e33c.a9511",
+        "type": "function",
+        "z": "8e611630.03d7b8",
+        "name": "Initialisation",
+        "func": "msg.params =\n{\n\"workspace_id\":\"d61f886b-d9c1-433b-a327-42d4923ad5a0\",\n\"apikey\":\"NKUlUtbBLrJ94c4Nm-KDPdIhbR0QDha5LYd7MyXugoPy\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 263,
+        "y": 236,
+        "wires": [
+            [
+                "fae4f9fa.df7488"
+            ]
+        ]
+    },
+    {
+        "id": "fb6693f1.788b5",
+        "type": "function",
+        "z": "8e611630.03d7b8",
+        "name": "init",
+        "func": "msg.params =\n{\n\"workspace_id\":\"d61f886b-d9c1-433b-a327-42d4923ad5a0\",\n\"apikey\":\"NKUlUtbBLrJ94c4Nm-KDPdIhbR0QDha5LYd7MyXugoPy\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1001.5,
+        "y": 236,
+        "wires": [
+            [
+                "9eae6ed2.4e582"
+            ]
+        ]
+    },
+    {
+        "id": "6126af89.1ed74",
+        "type": "inject",
+        "z": "8e611630.03d7b8",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "2",
+        "x": 87,
+        "y": 236,
+        "wires": [
+            [
+                "d881e33c.a9511"
+            ]
+        ]
+    },
+    {
+        "id": "fae4f9fa.df7488",
+        "type": "function",
+        "z": "8e611630.03d7b8",
+        "name": "method listIntents",
+        "func": "msg.params.method=\"listIntents\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 466.5,
+        "y": 236,
+        "wires": [
+            [
+                "a9cb9546.cc5218"
+            ]
+        ]
+    },
+    {
+        "id": "9eae6ed2.4e582",
+        "type": "function",
+        "z": "8e611630.03d7b8",
+        "name": "Create Examples",
+        "func": "msg.params.method=\"createExample\";\nmsg.params.intent=msg.payload.intent;\nmsg.params.example=msg.payload.example;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 658.5,
+        "y": 144,
+        "wires": [
+            [
+                "448ee3df.a856fc"
+            ]
+        ]
+    },
+    {
+        "id": "bb324a5c.b9ea58",
+        "type": "function",
+        "z": "8e611630.03d7b8",
+        "name": "reset",
+        "func": "msg.params.method=\"\";\nmsg.params.intent=\"\";\nmsg.params.example=\"\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 270.5,
+        "y": 150,
+        "wires": [
+            [
+                "d881e33c.a9511"
+            ]
+        ]
+    },
+    {
+        "id": "85c6fe69.b14fc",
+        "type": "function",
+        "z": "8e611630.03d7b8",
+        "name": "Init",
+        "func": "msg.params =\n{\n\"workspace_id\":\"d61f886b-d9c1-433b-a327-42d4923ad5a0\",\n\"apikey\":\"NKUlUtbBLrJ94c4Nm-KDPdIhbR0QDha5LYd7MyXugoPy\"\n}\nvar valeur = msg.payload.Intent;\nmsg.reponse=msg.payload.Reponse;\nmsg.intention=valeur;\nmsg.payload = {\"intent\":valeur.replace(\" \", \"_\")};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 321.5,
+        "y": 341,
+        "wires": [
+            [
+                "31e5fe73.9263f2"
+            ]
+        ]
+    },
+    {
+        "id": "31e5fe73.9263f2",
+        "type": "function",
+        "z": "8e611630.03d7b8",
+        "name": "createIntent",
+        "func": "msg.params.method=\"createIntent\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 510.5,
+        "y": 343,
+        "wires": [
+            [
+                "e9121715.7d3b88"
+            ]
+        ]
+    },
+    {
+        "id": "e9121715.7d3b88",
+        "type": "watson-conversation-v1-workspace-manager",
+        "z": "8e611630.03d7b8",
+        "name": "",
+        "cwm-custom-mode": "listWorkspaces",
+        "cwm-workspace-id": "",
+        "cwm-intent": "",
+        "cwm-example": "",
+        "cwm-entity": "",
+        "cwm-entity-value": "",
+        "cwm-dialog-node": "",
+        "cwm-export-content": false,
+        "cwm-default-endpoint": true,
+        "cwm-service-endpoint": "https://gateway.watsonplatform.net/assistant/api",
+        "x": 422.5,
+        "y": 422,
+        "wires": [
+            [
+                "2d7a379d.21e848"
+            ]
+        ]
+    },
+    {
+        "id": "a9467a78.3d73c8",
+        "type": "ui_form",
+        "z": "8e611630.03d7b8",
+        "name": "",
+        "label": "",
+        "group": "170dffa.65b53",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Intention",
+                "value": "Intent",
+                "type": "text",
+                "required": true
+            },
+            {
+                "label": "Réponse",
+                "value": "Reponse",
+                "type": "text",
+                "required": true
+            }
+        ],
+        "formValue": {
+            "Intent": "",
+            "Reponse": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "",
+        "x": 151.5,
+        "y": 341,
+        "wires": [
+            [
+                "85c6fe69.b14fc"
+            ]
+        ]
+    },
+    {
+        "id": "2d7a379d.21e848",
+        "type": "function",
+        "z": "8e611630.03d7b8",
+        "name": "CreateReponse",
+        "func": "msg.params.method=\"createDialogNode\";\n\nvar condition = \"#\" + msg.intention;\nmsg.payload=\n{\"dialog_node\": msg.intention,\n\"conditions\":condition,\n\"output\":\n{\n    \"generic\":\n    [\n        {\"response_type\":\"text\",\n            \"values\":\n            [\n                {\"text\":msg.reponse}\n            ]\n        }\n    ]\n    \n},\n\"title\":msg.intention};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 395.5,
+        "y": 494,
+        "wires": [
+            [
+                "3ec7be13.a47312"
+            ]
+        ]
+    },
+    {
+        "id": "3ec7be13.a47312",
+        "type": "watson-conversation-v1-workspace-manager",
+        "z": "8e611630.03d7b8",
+        "name": "",
+        "cwm-custom-mode": "listWorkspaces",
+        "cwm-workspace-id": "",
+        "cwm-intent": "",
+        "cwm-example": "",
+        "cwm-entity": "",
+        "cwm-entity-value": "",
+        "cwm-dialog-node": "",
+        "cwm-export-content": false,
+        "cwm-default-endpoint": true,
+        "cwm-service-endpoint": "https://gateway.watsonplatform.net/assistant/api",
+        "x": 671.5,
+        "y": 526,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "63e8c25c.dfe8fc",
+        "type": "watson-conversation-v1",
+        "z": "8e611630.03d7b8",
+        "name": "",
+        "workspaceid": "",
+        "multiuser": false,
+        "context": true,
+        "empty-payload": false,
+        "default-endpoint": true,
+        "service-endpoint": "https://gateway.watsonplatform.net/assistant/api",
+        "timeout": "",
+        "optout-learning": false,
+        "x": 441.5,
+        "y": 656,
+        "wires": [
+            [
+                "dfaf4f05.747c"
+            ]
+        ]
+    },
+    {
+        "id": "1a5530bb.31e19f",
+        "type": "function",
+        "z": "8e611630.03d7b8",
+        "name": "Init",
+        "func": "msg.params =\n{\n\"workspace_id\":\"d61f886b-d9c1-433b-a327-42d4923ad5a0\",\n\"apikey\":\"NKUlUtbBLrJ94c4Nm-KDPdIhbR0QDha5LYd7MyXugoPy\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 269,
+        "y": 653,
+        "wires": [
+            [
+                "63e8c25c.dfe8fc"
+            ]
+        ]
+    },
+    {
+        "id": "4d4dc330.d55d8c",
+        "type": "ui_text",
+        "z": "8e611630.03d7b8",
+        "group": "87616ab5.10e278",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Réponse",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "x": 851.5,
+        "y": 655,
+        "wires": []
+    },
+    {
+        "id": "5f423a6.8392ac4",
+        "type": "ui_text_input",
+        "z": "8e611630.03d7b8",
+        "name": "",
+        "label": "Question ?",
+        "group": "87616ab5.10e278",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": "0",
+        "topic": "",
+        "x": 100.5,
+        "y": 654,
+        "wires": [
+            [
+                "1a5530bb.31e19f"
+            ]
+        ]
+    },
+    {
+        "id": "dfaf4f05.747c",
+        "type": "function",
+        "z": "8e611630.03d7b8",
+        "name": "",
+        "func": "msg.payload = msg.payload.output.text[0];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 648.5,
+        "y": 641,
+        "wires": [
+            [
+                "4d4dc330.d55d8c"
+            ]
+        ]
+    },
+    {
+        "id": "6202985a.636498",
+        "type": "ui_group",
+        "z": "",
+        "name": "Ajout d'exemple",
+        "tab": "556050a1.6d2e8",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "170dffa.65b53",
+        "type": "ui_group",
+        "z": "",
+        "name": "Création d'une intention",
+        "tab": "556050a1.6d2e8",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "87616ab5.10e278",
+        "type": "ui_group",
+        "z": "",
+        "name": "Question ?",
+        "tab": "556050a1.6d2e8",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "556050a1.6d2e8",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Workshop 1",
+        "icon": "dashboard",
+        "order": 1
+    }
+]
